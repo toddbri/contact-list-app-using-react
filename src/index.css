@@ -1,0 +1,72 @@
+/** {border: 1px solid red;}*/
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.container {
+  text-align: center;
+}
+
+.outerContainer {
+  background-color: rgb(188, 237, 252);
+  height: 100vh;
+  text-align: center;
+}
+
+.formContainer {
+  width: 65%;
+  margin: auto;
+  padding-top: 60px;
+  text-align: left;
+}
+
+.contacts{
+  text-align: left;
+  width: 65%;
+  margin: auto;
+}
+
+.addButton {
+  margin-top: 15px;
+}
+
+.contacts .contactBox:nth-child(odd){
+  background-color: rgb(134, 173, 213);
+}
+
+.contacts .contactBox:nth-child(even){
+  background-color: #FFFFFF;
+}
+
+ul {
+  padding-left:10px;
+}
+
+.contactBox{
+    border: 2px solid black;
+    margin-bottom: 3px;
+    padding-top: 5px;
+    border-radius: 8px;
+}
+.details {
+  width:90%;
+  display:inline-block;
+}
+li {
+  list-style-type: none;
+}
+.deleteButton {
+  width: 2%;
+  height: 100%;
+  font-weight: bold;
+  color: black;
+  display: inline-block;
+  float:right;
+  text-align: right;
+  cursor: pointer;
+  margin-top: -7px;
+  margin-right: 2px;
+}
