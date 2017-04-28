@@ -4,6 +4,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background-color: rgb(188, 237, 252);
+
 }
 
 .container {
@@ -12,14 +14,23 @@ body {
 
 .outerContainer {
   background-color: rgb(188, 237, 252);
-  height: 100vh;
+  /*height: 100vh;*/
   text-align: center;
+  height: 100%;
 }
+
+.modal-body{
+    background-color: orange;
+    width: 60%;
+    height: 400px;
+    margin: auto;
+}
+
 
 .formContainer {
   width: 65%;
   margin: auto;
-  padding-top: 60px;
+  padding-top: 30%;
   text-align: left;
 }
 
@@ -38,6 +49,9 @@ body {
   margin-right: 5px;
 }
 
+.addEntry {
+  margin-top: 15px;
+}
 .contacts .contactBox:nth-child(odd){
   background-color: rgb(134, 173, 213);
 }
@@ -61,6 +75,7 @@ ul {
     margin-bottom: 3px;
     padding-top: 5px;
     border-radius: 8px;
+    height: 75px;
 
 }
 .details {
@@ -82,4 +97,40 @@ li {
   cursor: pointer;
   margin-top: -7px;
   margin-right: 2px;
+}
+
+.kill-leave {
+  position:absolute;
+  /*transform: */
+  /*opacity: 1;*/
+  animation-name: throwAway;
+  animation-duration: 3s;
+}
+
+.kill-leave.kill-leave.active {
+  /*opacity: 0;*/
+  animation-name: throwAway;
+  animation-duration: 3s;
+  /*transition: opacity 3000ms ease-in;*/
+}
+
+#trashcan {
+  position: fixed;
+  left: 5%;
+  bottom: 3vh;
+}
+
+@keyframes throwAway {
+
+  0% {
+    background-color: 'orange';
+  }
+
+  50% {
+    background-color: 'pink';
+  }
+  100% {
+    background-color: 'yellow';
+  }
+
 }
