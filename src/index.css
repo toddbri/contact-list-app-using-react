@@ -7,7 +7,9 @@ body {
   background-color: rgb(188, 237, 252);
 
 }
-
+.title {
+  font-size: 30px;
+}
 .container {
   text-align: center;
 }
@@ -19,20 +21,34 @@ body {
   height: 100%;
 }
 
+.modal {
+  /*background-color: yellow;*/
+  opacity: .3;
+}
+.modal-dialog {
+  /*background-color: pink;*/
+  margin: 20% auto;
+}
+
 .modal-body{
-    background-color: orange;
+    /*background-color: orange;*/
     width: 60%;
     height: 400px;
     margin: auto;
 }
 
-
-.formContainer {
+.modal-content {
+  /*background-color: red;*/
+  padding: 30px;
+  text-align: left;
+  opacity: 1;
+}
+/*.formContainer {
   width: 65%;
   margin: auto;
   padding-top: 30%;
   text-align: left;
-}
+}*/
 
 .contacts{
   text-align: left;

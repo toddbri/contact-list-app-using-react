@@ -141,11 +141,11 @@ class ContactList extends React.Component {
     return (
       <div className="outerContainer">
         <div className="add"><button data-toggle="modal" data-target="#inputForm" className="addEntry" onClick={()=>this.addEntry()}>Add</button></div>
-      <div id="inputForm" className="modal fade in" role="dialog">
+      <div id="inputForm" className=" fade in modal" role="dialog">
         <div className="modal-dialog">
 
           <div className="formContainer modal-body">
-            <form className="theForm form-group modal-content" onSubmit={(event)=>this.addContact(event)} method="post">
+            <form className="form-group modal-content" onSubmit={(event)=>this.addContact(event)} method="post">
               <label htmlFor="name">Name</label>
               <input className="form-control" type="text" onChange={(event) => this.sumthangChanged('name',event)} name="name" value={this.state.name}/>
               <label htmlFor="phone">Phone</label>
@@ -169,7 +169,7 @@ class ContactList extends React.Component {
           </div>
         </div>
         </div>
-        <div>Contacts</div>
+        <div className="title">Contacts</div>
         <div className="contacts">
           <TransitionGroup transitionName="kill" transitionLeaveTimeout={300} transitionEnterTimeout={300}>
             {this.state.contacts.map((contact,idx) =>
