@@ -63,11 +63,22 @@ body {
 .addButton, .saveEditButton, .cancelEditButton{
   margin-top: 15px;
   margin-right: 5px;
+  border-radius: 5px;
 }
 
-.addEntry {
+.addEntry,  .displayAllContacts, .displayOnlyFavorites{
   margin-top: 15px;
+  border-radius: 5px;
+  margin-left: 4px;
+  margin-right: 4px;
 }
+
+.favoriteStar {
+  height: 20px;
+  margin-left: 6px;
+
+}
+
 .contacts .contactBoxContainer:nth-child(odd){
   background-color: rgb(134, 173, 213);
   border-radius: 8px;
@@ -134,11 +145,15 @@ li {
   /*opacity: 1;*/
 }
 
-.kill-leave.kill-leave-active {
+.slowKill-leave.slowKill-leave-active {
   /*opacity: 0;*/
   animation-name: throwAway;
   animation-duration: 1s;
   /*transition: opacity 3000ms ease-in;*/
+}
+
+.fastKill-leave.fastKill-leave-active {
+  
 }
 
 #trashcan {

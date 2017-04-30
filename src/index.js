@@ -17,7 +17,9 @@ class ContactList extends React.Component {
       contactIndex: '',
       favorite: false,
       hasTrash: false,
-      onlyDisplayFavorites: true
+      onlyDisplayFavorites: false,
+      filterRender: false
+
     }
   }
 
@@ -34,7 +36,7 @@ class ContactList extends React.Component {
     if (this.state.name !== ''){
       console.log('submiting new contact');
       let newContact = {name: this.state.name, phone: this.state.phone,
-        email: this.state.email, type:this.state.type};
+        email: this.state.email, type:this.state.type, favorite: this.state.favorite};
       $.ajax({
         method: 'POST',
         url: 'http://localhost:5004/api/contacts',
@@ -52,7 +54,8 @@ class ContactList extends React.Component {
           phone: '',
           email: '',
           type: '',
-          contacts: this.state.contacts
+          contacts: this.state.contacts,
+          favorite: false
         });
       })
       .catch(err => console.log(err.message));
@@ -67,6 +70,11 @@ class ContactList extends React.Component {
 
   }
 
+  radioButtonChanged(value){
+    this.setState({favorite: value})
+
+  }
+
   deleteContact(idx){
     console.log("deleting contact with db id of: " + idx);
     $.ajax({
@@ -77,12 +85,12 @@ class ContactList extends React.Component {
     .then( value => {
       let contactstmp = this.state.contacts;
       contactstmp = contactstmp.filter(item => item.id !== idx);
-      this.setState({contacts: contactstmp, type:'Friend', name: '',phone:'',email:'',mode:'input'});
+      this.setState({contacts: contactstmp, type:'Friend', name: '',phone:'',email:'',mode:'input',favorite: false});
       }
     )
     .catch( err => console.log("error: " + err.message));
 
-    this.setState({name: '',phone:'',email:'',mode:'input'});
+    this.setState({name: '',phone:'',email:'',mode:'input', favorite: false});
     setTimeout(()=>this.setState({hasTrash:true}),1000);
 
   }
@@ -112,7 +120,7 @@ class ContactList extends React.Component {
       let contactstmp = this.state.contacts;
       contactstmp = contactstmp.map(item => item.id === idx ? contact : item );
       console.log(contactstmp);
-      this.setState({contacts: contactstmp, name: '', phone: '', email: '', type: 'Friend', favorite: '', mode:'input' });
+      this.setState({contacts: contactstmp, name: '', phone: '', email: '', type: 'Friend', favorite: false, mode:'input' });
 
     });
   }
@@ -123,10 +131,10 @@ class ContactList extends React.Component {
       name: '',
       phone:  '',
       email:  '',
-      type: '',
       mode: 'input',
       type: 'Friend',
-      contactIndex: ''
+      contactIndex: '',
+      favorite: false
     })
   }
 
@@ -145,7 +153,11 @@ class ContactList extends React.Component {
 
     return (
       <div className="outerContainer">
-        <div className="add"><button data-toggle="modal" data-target="#inputForm" className="addEntry" onClick={()=>this.addEntry()}>Add Contact</button></div>
+        <div className="add">
+          <button data-toggle="modal" data-target="#inputForm" className="addEntry" onClick={()=>this.addEntry()}>Add Contact</button>
+          {this.state.onlyDisplayFavorites === false ? <button  className="displayOnlyFavorites" onClick={()=>this.setState({onlyDisplayFavorites: true, filterRender: true})}>Display Favorites Only</button>
+           : <button  className="displayAllContacts" onClick={()=>this.setState({onlyDisplayFavorites: false})}>Display All Contacts</button>}
+        </div>
       <div id="inputForm" className=" fade in modal" role="dialog">
         <div className="modal-dialog">
 
@@ -170,10 +182,10 @@ class ContactList extends React.Component {
               <div className="">
                   <label id="radioButtonsLabel" htmlFor="inlineRadioOptions">Favorite</label>
                   <label className="radio-inline">
-                      <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Yes"/> Yes
+                      <input type="radio" data-checked={this.state.favorite} checked={this.state.favorite === true} onChange={()=> this.radioButtonChanged(true)} name="inlineRadioOptions" id="inlineRadio1" value="Yes"/> Yes
                     </label>
                     <label className="radio-inline">
-                      <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No"/> No
+                      <input type="radio"  data-checked={this.state.favorite} checked={this.state.favorite === false} onChange={()=> this.radioButtonChanged(false)}  name="inlineRadioOptions" id="inlineRadio2" value="No"/> No
                     </label>
               </div>
               <div className="form-group">
@@ -187,20 +199,20 @@ class ContactList extends React.Component {
         </div>
         <div className="title">Contacts</div>
         <div className="contacts">
-          <TransitionGroup transitionName="kill" transitionLeaveTimeout={1000} transitionEnterTimeout={1000}>
+          <TransitionGroup transitionName={this.state.filterRender?"fastKill": "slowKill"} transitionLeaveTimeout={this.state.filterRender?1:1000} transitionEnterTimeout={1000}>
 
 
 
 
 
-
+            {this.state.filterRender = false}
             {this.state.contacts.map((contact,idx) => {
                 let sundry = ((this.state.onlyDisplayFavorites && contact.favorite) || !this.state.onlyDisplayFavorites);
-                console.log("sundry: " + sundry);
                 return (sundry) ? <div className="contactBoxContainer" key={contact.id}>
                     <div data-id={contact.id} className="contactBox">
                       <div className='edit'>
                         <img alt="" className="editIcon" data-toggle="modal" data-target="#inputForm" onClick={()=>this.editContact(contact.id)} src="/images/Edit.png"/>
+                        {contact.favorite ? <img alt="" className="favoriteStar" src="/images/star.png"/>:null}
                       </div>
                       <div className="details">
                         <ul>
