@@ -15,7 +15,9 @@ class ContactList extends React.Component {
       contacts: [],
       mode: 'input',
       contactIndex: '',
-      favorite: 'FALSE'
+      favorite: false,
+      hasTrash: false,
+      onlyDisplayFavorites: false
     }
   }
 
@@ -75,12 +77,14 @@ class ContactList extends React.Component {
     .then( value => {
       let contactstmp = this.state.contacts;
       contactstmp = contactstmp.filter(item => item.id !== idx);
-      this.setState({contacts: contactstmp, type:'friend', name: '',phone:'',email:'',mode:'input'});
+      this.setState({contacts: contactstmp, type:'Friend', name: '',phone:'',email:'',mode:'input'});
       }
     )
     .catch( err => console.log("error: " + err.message));
 
     this.setState({name: '',phone:'',email:'',mode:'input'});
+    setTimeout(()=>this.setState({hasTrash:true}),1000);
+
   }
 
   saveEdit(){
@@ -140,7 +144,7 @@ class ContactList extends React.Component {
 
     return (
       <div className="outerContainer">
-        <div className="add"><button data-toggle="modal" data-target="#inputForm" className="addEntry" onClick={()=>this.addEntry()}>Add</button></div>
+        <div className="add"><button data-toggle="modal" data-target="#inputForm" className="addEntry" onClick={()=>this.addEntry()}>Add Contact</button></div>
       <div id="inputForm" className=" fade in modal" role="dialog">
         <div className="modal-dialog">
 
@@ -153,7 +157,7 @@ class ContactList extends React.Component {
               <label htmlFor="email">Email</label>
               <input className="form-control"  type="text" onChange={(event) => this.sumthangChanged('email',event)} name="email" value={this.state.email}/>
               <label htmlFor="type">Type</label>
-              <select className="form-control" onChange={(event) => this.sumthangChanged('type',event)} name="type" value={this.state.type}>
+              <select className="form-control dropdown" onChange={(event) => this.sumthangChanged('type',event)} name="type" value={this.state.type}>
                 <option value="Friend">Friend</option>
                 <option value="Co-worker">Co-worker</option>
                 <option value="Daughter">Daughter</option>
@@ -162,37 +166,67 @@ class ContactList extends React.Component {
                 <option value="Parent">Parent</option>
                 <option value="Alien">Alien</option>
               </select>
+              <div className="">
+                  <label id="radioButtonsLabel" htmlFor="inlineRadioOptions">Favorite</label>
+                  <label className="radio-inline">
+                      <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Yes"/> Yes
+                    </label>
+                    <label className="radio-inline">
+                      <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="No"/> No
+                    </label>
+              </div>
+              <div className="form-group">
               {this.state.mode ==='input' ? <button className="addButton" type="submit">Submit</button>: null}
               {this.state.mode ==='edit' ? <button data-dismiss="modal" onClick={()=>this.saveEdit()} className="saveEditButton" type="button">Save</button>:null}
               {this.state.mode ==='edit' ? <button data-dismiss="modal" onClick={()=>this.cancelEdit()} className="cancelEditButton" type="button">Cancel</button>: null}
+              </div>
             </form>
           </div>
         </div>
         </div>
         <div className="title">Contacts</div>
         <div className="contacts">
-          <TransitionGroup transitionName="kill" transitionLeaveTimeout={300} transitionEnterTimeout={300}>
-            {this.state.contacts.map((contact,idx) =>
+          <TransitionGroup transitionName="kill" transitionLeaveTimeout={1000} transitionEnterTimeout={1000}>
 
-              <div key={contact['id']} data-id={contact['id']} className="contactBox">
-                <div className='edit'>
-                  <img alt="editicon" className="editIcon" data-toggle="modal" data-target="#inputForm" onClick={()=>this.editContact(contact['id'])} src="/images/Edit.png"/>
-                </div>
-                <div className="details">
-                  <ul>
-                    <li> {contact['name']} - {contact['type']}</li>
-                    <li> {contact['phone']}</li>
-                    <li> {contact['email']}</li>
 
-                  </ul>
-                </div>
-                <div onClick={() => this.deleteContact(contact['id'])} className="deleteButton">X</div>
-              </div>
-            )}
+
+
+
+
+            {this.state.contacts.map((contact,idx) => {
+                let sundry = ((this.state.onlyDisplayFavorites && contact.favorite) || !this.state.onlyDisplayFavorites);
+                <div>Sundry: {sundry}</div>
+                return (sundry) ? <div className="contactBoxContainer" key={contact['id']}>
+                    <div data-id={contact['id']} className="contactBox">
+                      <div className='edit'>
+                        <img alt="" className="editIcon" data-toggle="modal" data-target="#inputForm" onClick={()=>this.editContact(contact['id'])} src="/images/Edit.png"/>
+                      </div>
+                      <div className="details">
+                        <ul>
+                          <li> {contact['name']} - {contact['type']}</li>
+                          <li> {contact['phone']}</li>
+                          <li> {contact['email']}</li>
+
+                        </ul>
+                      </div>
+                      <div onClick={() => this.deleteContact(contact['id'])} className="deleteButton">X</div>
+                    </div>
+                  </div> : null;
+              })
+
+            }
+
+
+
+
+
           </TransitionGroup>
 
         </div>
+        {this.state.hasTrash ? <img id="trashcan" src="/images/tc-full.png" height="65px"/>:<img id="trashcan" src="/images/tc-empty.png" height="50px"/> }
+
       </div>
+
     )
   }
 

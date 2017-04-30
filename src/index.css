@@ -68,14 +68,18 @@ body {
 .addEntry {
   margin-top: 15px;
 }
-.contacts .contactBox:nth-child(odd){
+.contacts .contactBoxContainer:nth-child(odd){
   background-color: rgb(134, 173, 213);
+  border-radius: 8px;
 }
 
-.contacts .contactBox:nth-child(even){
+.contacts .contactBoxContainer:nth-child(even){
   background-color: #FFFFFF;
+  border-radius: 8px;
 }
-
+/*label {
+  margin-top: 5px;
+}*/
 ul {
   padding-left:10px;
   float:left;
@@ -86,12 +90,17 @@ ul {
   cursor: pointer;
 
 }
+
+#radioButtonsLabel {
+  margin-right: 5px;
+}
 .contactBox{
     border: 2px solid black;
     margin-bottom: 3px;
     padding-top: 5px;
     border-radius: 8px;
     height: 75px;
+
 
 }
 .details {
@@ -102,6 +111,10 @@ ul {
 li {
   list-style-type: none;
 }
+
+
+
+
 .deleteButton {
   width: 2%;
   height: 100%;
@@ -116,17 +129,15 @@ li {
 }
 
 .kill-leave {
-  position:absolute;
+  /*position:absolute;*/
   /*transform: */
   /*opacity: 1;*/
-  animation-name: throwAway;
-  animation-duration: 3s;
 }
 
-.kill-leave.kill-leave.active {
+.kill-leave.kill-leave-active {
   /*opacity: 0;*/
   animation-name: throwAway;
-  animation-duration: 3s;
+  animation-duration: 1s;
   /*transition: opacity 3000ms ease-in;*/
 }
 
@@ -138,15 +149,16 @@ li {
 
 @keyframes throwAway {
 
-  0% {
-    background-color: 'orange';
+  100% {
+    /*transform: perspective(350px) rotateX(90deg);*/
+    transform: scaleY(0);
   }
 
-  50% {
+  /*50% {
     background-color: 'pink';
   }
   100% {
     background-color: 'yellow';
-  }
+  }*/
 
 }
