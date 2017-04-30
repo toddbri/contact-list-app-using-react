@@ -17,7 +17,7 @@ class ContactList extends React.Component {
       contactIndex: '',
       favorite: false,
       hasTrash: false,
-      onlyDisplayFavorites: false
+      onlyDisplayFavorites: true
     }
   }
 
@@ -112,7 +112,7 @@ class ContactList extends React.Component {
       let contactstmp = this.state.contacts;
       contactstmp = contactstmp.map(item => item.id === idx ? contact : item );
       console.log(contactstmp);
-      this.setState({contacts: contactstmp, name: '', phone: '', email: '', type: 'friend', favorite: '', mode:'input' });
+      this.setState({contacts: contactstmp, name: '', phone: '', email: '', type: 'Friend', favorite: '', mode:'input' });
 
     });
   }
@@ -125,6 +125,7 @@ class ContactList extends React.Component {
       email:  '',
       type: '',
       mode: 'input',
+      type: 'Friend',
       contactIndex: ''
     })
   }
@@ -132,8 +133,8 @@ class ContactList extends React.Component {
   editContact(idx){
     console.log("in edit");
     console.log("looking for contact with DB id of: " + idx);
-    let contacttmp =  this.state.contacts.filter(contact => contact.id === idx);
-    contacttmp = contacttmp[0];
+    let contacttmp =  this.state.contacts.filter(contact => contact.id === idx)[0];
+    // contacttmp = contacttmp[0];
     contacttmp.mode = 'edit';
     console.log(contacttmp.id);
     console.log(contacttmp);
@@ -195,21 +196,21 @@ class ContactList extends React.Component {
 
             {this.state.contacts.map((contact,idx) => {
                 let sundry = ((this.state.onlyDisplayFavorites && contact.favorite) || !this.state.onlyDisplayFavorites);
-                <div>Sundry: {sundry}</div>
-                return (sundry) ? <div className="contactBoxContainer" key={contact['id']}>
-                    <div data-id={contact['id']} className="contactBox">
+                console.log("sundry: " + sundry);
+                return (sundry) ? <div className="contactBoxContainer" key={contact.id}>
+                    <div data-id={contact.id} className="contactBox">
                       <div className='edit'>
-                        <img alt="" className="editIcon" data-toggle="modal" data-target="#inputForm" onClick={()=>this.editContact(contact['id'])} src="/images/Edit.png"/>
+                        <img alt="" className="editIcon" data-toggle="modal" data-target="#inputForm" onClick={()=>this.editContact(contact.id)} src="/images/Edit.png"/>
                       </div>
                       <div className="details">
                         <ul>
-                          <li> {contact['name']} - {contact['type']}</li>
-                          <li> {contact['phone']}</li>
-                          <li> {contact['email']}</li>
+                          <li> {contact.name} - {contact.type}</li>
+                          <li> {contact.phone}</li>
+                          <li> {contact.email}</li>
 
                         </ul>
                       </div>
-                      <div onClick={() => this.deleteContact(contact['id'])} className="deleteButton">X</div>
+                      <div onClick={() => this.deleteContact(contact.id)} className="deleteButton">X</div>
                     </div>
                   </div> : null;
               })
@@ -223,7 +224,7 @@ class ContactList extends React.Component {
           </TransitionGroup>
 
         </div>
-        {this.state.hasTrash ? <img id="trashcan" src="/images/tc-full.png" height="65px"/>:<img id="trashcan" src="/images/tc-empty.png" height="50px"/> }
+        {this.state.hasTrash ? <img alt="fulltrashcan" id="trashcan" src="/images/tc-full.png" height="65px"/>:<img alt="emptytrashcan" id="trashcan" src="/images/tc-empty.png" height="50px"/> }
 
       </div>
 
